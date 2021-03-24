@@ -1,0 +1,31 @@
+.login__container {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  margin-top: -10rem;
+  max-width: 300px;
+}
+
+.login__img {
+  outline: 2px solid #000;
+}
+
+.form {
+  margin-top: 2rem;
+
+  .input__login {
+    border: 1px solid #000 !important;
+  }
+
+  p {
+    color: #f35454;
+  }
+
+  .button {
+    margin-top: 1.4rem;
+  }
+}
