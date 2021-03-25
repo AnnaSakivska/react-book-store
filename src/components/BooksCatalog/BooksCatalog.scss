@@ -1,0 +1,12 @@
+.search-wrapper {
+  display: grid;
+  grid-template-columns: 80% 1fr;
+  grid-gap: 1rem;
+  align-items: flex-end;
+}
+
+.cards__container {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 2rem;
+}

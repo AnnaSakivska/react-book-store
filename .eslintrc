@@ -13,7 +13,11 @@
     "linebreak-style": 0,
     "comma-dangle": ["error", "never"],
     "no-unused-vars": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-use-before-define": "off",
+    "no-plusplus": "off",
+    "max-len": "off",
+    "object-curly-newline": "off"
     // "no-unused-expressions": "off"
   }
 }

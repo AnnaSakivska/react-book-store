@@ -1,0 +1,29 @@
+.header-wrapper {
+  margin: 1rem 0 0;
+}
+
+.header,
+.header-cart {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.header-cart {
+  justify-content: space-between;
+
+  .cart-wrapper {
+    cursor: pointer;
+    margin: 0 2rem 14px 0;
+  }
+}
+
+.user-name {
+  font-size: 16px;
+  margin-right: 1rem;
+}
+
+.line-division {
+  margin: 1rem 0;
+}
