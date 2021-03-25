@@ -1,0 +1,11 @@
+.price-select {
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-radius: 0.2rem;
+  width: 100%;
+  height: 2.6rem;
+
+  &:active,
+  &:focus {
+    border: 1px solid rgba(34, 36, 38, 0.15) !important;
+  }
+}
