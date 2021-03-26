@@ -4,10 +4,9 @@ import React from 'react';
 // eslint-disable-next-line react/prop-types
 function SearchBar({ searchTerm, setSearchTerm }) {
   return (
-    // <div className="ui segment">
     <form className="ui form">
       <div className="field">
-        <label>Books Search</label>
+        <label>Books Search by Title</label>
         <input
           className=""
           type="text"
@@ -18,7 +17,6 @@ function SearchBar({ searchTerm, setSearchTerm }) {
         />
       </div>
     </form>
-    // </div>
   );
 }
 

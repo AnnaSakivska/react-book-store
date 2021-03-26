@@ -1,15 +1,18 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './Header.scss';
+import { Link } from 'react-router-dom';
 import { logOut } from '../../redux/actions';
 
 function Header() {
   const dispatch = useDispatch();
   const handleLogout = () => dispatch(logOut());
-  const userName = JSON.parse(localStorage.getItem('user')).username.charAt(0).toUpperCase()
-    + JSON.parse(localStorage.getItem('user')).username.slice(1);
-
+  const { cartReducer } = useSelector((state) => state);
+  const userName = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).username.charAt(0).toUpperCase()
+    + JSON.parse(localStorage.getItem('user')).username.slice(1) : '';
+  if (cartReducer.books.length) localStorage.setItem('selectedBooks', cartReducer.books.length ? JSON.stringify(cartReducer.books) : []);
+  const totalItems = localStorage.getItem('selectedBooks') ? JSON.parse(localStorage.getItem('selectedBooks')) : [];
   return (
     <div className="ui container header-wrapper">
       <div className="header">
@@ -21,7 +24,7 @@ function Header() {
         <h1>JS Band Store</h1>
         <div className="cart-wrapper">
           <i className="cart teal large plus icon" />
-          <span>3</span>
+          <span>{totalItems.length ? totalItems.map((item) => +item.orderedCount).reduce((acc, cur) => acc + cur) : 0}</span>
         </div>
       </div>
     </div>

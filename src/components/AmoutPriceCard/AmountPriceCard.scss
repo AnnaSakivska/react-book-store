@@ -1,0 +1,18 @@
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.add-to-card {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#warning-for-btn {
+  color: #fc3434;
+  margin-right: 1rem;
+  height: 100%;
+  align-self: center;
+}

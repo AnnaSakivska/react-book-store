@@ -8,12 +8,10 @@ import BooksCatalog from './BooksCatalog/BooksCatalog';
 import LogIn from './LogIn/LogIn';
 import './App.scss';
 import Header from './Header/Header';
+import BookDetails from './BookDetails/BookDetails';
 
 const App = () => {
-  const { authorReducer } = useSelector((state) => {
-    // console.log(state);
-    return state;
-  });
+  const { authorReducer, booksReducer } = useSelector((state) => state);
 
   return (
     <div>
@@ -34,6 +32,11 @@ const App = () => {
             path="/bookscatalog"
             exact
             render={() => (authorReducer.user.token ? <BooksCatalog /> : <Redirect to="/login" />)}
+          />
+          <Route
+            path="/book-details/:id"
+            exact
+            render={() => (authorReducer.user.token ? <BookDetails /> : <Redirect to="/login" />)}
           />
         </Switch>
       </BrowserRouter>

@@ -29,8 +29,6 @@ function LogIn() {
     setErrors(validate(name, setIsSubmitting));
   };
 
-  if (authorReducer.error) console.log(authorReducer.error);
-
   if (authorReducer.loading && authorReducer.isLoggedIn) {
     return (
       <div className="login__container">
@@ -72,22 +70,5 @@ function LogIn() {
     </>
   );
 }
-
-// const mapStateToProps = (name) => {
-//   return {
-//     username: name
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     register: (name, isSubmitting) => {
-//       dispatch(RegisterAuthAction(name));
-//       // if (isSubmitting) {
-//       console.log('working');
-//       // }
-//     }
-//   };
-// };
 
 export default LogIn;
