@@ -1,0 +1,38 @@
+.details-wrapper {
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 2rem;
+
+  .cards {
+    justify-content: flex-end;
+  }
+}
+
+.book-img__wrapper {
+  margin-right: 1rem;
+}
+
+.book-details {
+  display: flex;
+  justify-content: space-between;
+
+  .book-title {
+    width: 11rem;
+  }
+
+  .book-author {
+    font-style: italic;
+  }
+
+  .book-tag {
+    margin-top: 1.4rem;
+  }
+
+  .book-description {
+    line-height: 22px;
+    letter-spacing: 0.8px;
+    margin-top: 1rem;
+    // text-align: center;
+  }
+}

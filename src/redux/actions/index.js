@@ -33,6 +33,7 @@ const setUser = (data) => ({
 
 const logOut = () => {
   localStorage.removeItem('user');
+  localStorage.removeItem('selectedBooks');
   return {
     type: 'LOG_OUT'
   };
@@ -79,6 +80,22 @@ const hideLoader = () => (dispatch) => {
   });
 };
 
+// chosen books
+const cartType = {
+  ADD_BOOK_TO_CART: 'ADD_BOOK_TO_CART',
+  ADD_AMOUNT_OF_BOOK: 'ADD_AMOUNT_OF_BOOK'
+};
+
+const addBookToCart = (cart) => ({
+  type: cartType.ADD_BOOK_TO_CART,
+  payload: cart
+});
+
+export const addAmountOfBook = (id = null, amount) => ({
+  type: cartType.ADD_AMOUNT_OF_BOOK,
+  payload: { id, amount }
+});
+
 export {
-  RegisterAuthAction, AuthActionType, setUser, logOut, BooksType, getBooks
+  RegisterAuthAction, setUser, logOut, getBooks, addBookToCart, AuthActionType, BooksType, cartType
 };

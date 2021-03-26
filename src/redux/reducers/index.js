@@ -1,5 +1,6 @@
+/* eslint-disable no-case-declarations */
 import { combineReducers } from 'redux';
-import { AuthActionType, BooksType } from '../actions';
+import { AuthActionType, BooksType, cartType } from '../actions';
 
 // Authorization reducers
 const emptyAuthState = {
@@ -77,11 +78,41 @@ const booksReducer = (state = defaultBooksState, action) => {
 
 const setBooks = (books) => ({ type: BooksType.GET_BOOKS_SUCC, payload: books });
 
+// Cart reducer
+const defaultCartState = {
+  books: []
+};
+
+const cartReducer = (state = defaultCartState, action) => {
+  switch (action.type) {
+    case cartType.ADD_BOOK_TO_CART:
+      return {
+        books: [...state.books, action.payload]
+      };
+    case cartType.ADD_AMOUNT_OF_BOOK:
+      const bookItem = [...state.books].find((item) => {
+        return item.id === action.payload.id;
+      });
+      return {
+        books: state.books.map((item) => {
+          if (item.id === bookItem.id) {
+            return {
+              ...item,
+              orderedCount: +item.orderedCount + +action.payload.amount
+            };
+          }
+          return item;
+        })
+      };
+    case 'LOG_OUT':
+      return defaultCartState;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   authorReducer,
   booksReducer,
-  setBooks
+  cartReducer
 });
-
-// eslint-disable-next-line import/prefer-default-export
-// export { authorReducer };

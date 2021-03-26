@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './BooksCatalog.scss';
 // import InfiniteScroll from 'react-infinite-scroller';
 import Header from '../Header/Header';
-import SearchBar from '../SearchBar/SearchBar';
+import SearchBar from '../SearchBar';
 import { getBooks } from '../../redux/actions';
 import BookCard from '../BookCard/BookCard';
 import Spinner from '../Spinner';
@@ -29,11 +29,12 @@ function BooksCatalog() {
       searchValue.map(({ title, author, price, cover, id }) => {
         return (
           <BookCard
+            key={id}
             title={title}
             author={author}
             price={price}
             cover={cover}
-            key={id}
+            id={id}
           />
         );
       })
@@ -57,14 +58,3 @@ function BooksCatalog() {
 }
 
 export default BooksCatalog;
-
-// author: "JuanMa Garrido"
-// count: 13
-// cover: "https://jsbooks.revolunet.com/img/cover-apuntes-javascript-intermedio.png"
-// description: "(En Castellano) Revision de conceptos (actuales) de javascript desde
-// basicos hasta un nivel intermedio"
-// id: "1"
-// level: "Intermediate"
-// price: 40
-// tags: ["core"]
-// title: "Apuntes de Javascript I - Nivel Intermedio"
