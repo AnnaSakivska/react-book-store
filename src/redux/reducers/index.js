@@ -107,6 +107,10 @@ const cartReducer = (state = defaultCartState, action) => {
           return item;
         })
       };
+    case cartType.DELETE_ALL_BOOKS:
+      return {
+        books: []
+      };
     case 'LOG_OUT':
       return defaultCartState;
     default:

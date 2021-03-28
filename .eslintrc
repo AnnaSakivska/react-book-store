@@ -19,7 +19,9 @@
     "max-len": "off",
     "object-curly-newline": "off",
     "consistent-return": "off",
-    "no-array-index-key": "off"
+    "no-array-index-key": "off",
+    "click-events-have-key-events": "off",
+    "react/prop-types" : "off"
     // "no-unused-expressions": "off"
   }
 }

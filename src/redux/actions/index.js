@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 /* eslint-disable quotes */
 import axios from 'axios';
 
@@ -84,7 +85,8 @@ const hideLoader = () => (dispatch) => {
 const cartType = {
   ADD_BOOK_TO_CART: 'ADD_BOOK_TO_CART',
   ADD_AMOUNT_OF_BOOK: 'ADD_AMOUNT_OF_BOOK',
-  DELETE_BOOK: 'DELETE_BOOK'
+  DELETE_BOOK: 'DELETE_BOOK',
+  DELETE_ALL_BOOKS: 'DELETE_ALL_BOOKS'
 };
 
 const addBookToCart = (cart) => ({
@@ -102,6 +104,22 @@ const deleteBook = (id = null) => ({
   payload: id
 });
 
+const deleteAllBooks = () => ({
+  type: cartType.DELETE_ALL_BOOKS
+});
+
 export {
-  RegisterAuthAction, setUser, logOut, getBooks, addBookToCart, addAmountOfBook, deleteBook, AuthActionType, BooksType, cartType
+  showLoader,
+  hideLoader,
+  RegisterAuthAction,
+  setUser,
+  logOut,
+  getBooks,
+  addBookToCart,
+  addAmountOfBook,
+  deleteBook,
+  deleteAllBooks,
+  AuthActionType,
+  BooksType,
+  cartType
 };

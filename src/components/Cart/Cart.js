@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import Header from '../Header/Header';
 
-import { addBookToCart, addAmountOfBook, deleteBook } from '../../redux/actions';
+import { addBookToCart, addAmountOfBook, deleteBook, deleteAllBooks } from '../../redux/actions';
+import PurchaseModal from '../PurchaceModal/PurchaseModal';
 import './Cart.scss';
 
 function Cart() {
   const [isLastBook, setIsLastBook] = useState(false);
+  const [isPurchase, setIsPurchase] = useState(false);
+  const [purchaseMsg, setPurchaseMsg] = useState('');
   const dispatch = useDispatch();
   const reducerBooks = useSelector((state) => state.cartReducer.books);
   const localStBooks = JSON.parse(localStorage.getItem('selectedBooks'));
@@ -41,6 +45,33 @@ function Cart() {
     dispatch(addAmountOfBook(id, changedAmount));
   };
 
+  const onClearCart = () => {
+    localStorage.setItem('selectedBooks', '[]');
+    dispatch(deleteAllBooks());
+  };
+
+  const purchaseHandler = async (booksToPurchase) => {
+    const idAndCountArr = booksToPurchase.map((book) => [book.id, book.orderedCount]);
+    const headers = { Authorization: `Bearer ${JSON.parse(localStorage.getItem('user')).token}` };
+    const idArr = [];
+    idAndCountArr.forEach((bookInfo) => {
+      for (let i = 0; i < +bookInfo[1]; i++) {
+        idArr.push(bookInfo[0]);
+      }
+    });
+
+    try {
+      const res = await axios.post('https://js-band-store-api.glitch.me/purchase', { books: [idArr.join()] }, { headers });
+      const { data } = res;
+      setPurchaseMsg(data.message);
+      setIsPurchase(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // dispatch(hideLoader());
+    }
+  };
+
   const cartContent = (cartBooks, handler) => {
     if (!cartBooks.length) {
       return (
@@ -61,7 +92,15 @@ function Cart() {
                 <th className="name-colomn">Name</th>
                 <th>Count</th>
                 <th>Price</th>
-                <th className="total-colomn">Total</th>
+                <th className="total-colomn">
+                  <span>Total</span>
+                  <div className="tooltip">
+                    <button type="button" onClick={onClearCart}>
+                      <i className="close inverted black icon" />
+                    </button>
+                    <span className="tooltiptext">Clear cart</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -71,6 +110,7 @@ function Cart() {
                     <td data-label="name">{book.title}</td>
                     <td data-label="count">
                       <input
+                        className="count-input"
                         type="number"
                         id="tentacles"
                         name="tentacles"
@@ -99,11 +139,38 @@ function Cart() {
     <>
       <Header />
       <div className="ui container cart-wrapper">
-        <button className="ui button small teal purchase-btn" type="button" disabled={isBooks}>Purchase</button>
+        <button className="ui button small teal purchase-btn" type="button" disabled={isBooks} onClick={() => purchaseHandler(books)}>Purchase</button>
         <div className="">
           {cartContent(books, onBookAmountCange)}
         </div>
       </div>
+      <PurchaseModal purchaseMsg={purchaseMsg} trigger={isPurchase} setTrigger={setIsPurchase} onClearCart={onClearCart} reducerBooks={reducerBooks}>
+        <table className="ui celled table">
+          <thead>
+            <tr>
+              <th className="name-colomn">Name</th>
+              <th>Count</th>
+              <th>Price</th>
+              <th className="total-colomn">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...books].map((book) => {
+              return (
+                <tr className="cart-row" key={book.id}>
+                  <td data-label="name">{book.title}</td>
+                  <td data-label="count">{book.orderedCount}</td>
+                  <td data-label="price">{book.price}</td>
+                  <td data-label="total" className="totals-wrapper">
+                    {parseFloat(book.price * book.orderedCount).toFixed(2)}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <span className="puchase-total">{`Total Price -  ${totalPrice} $`}</span>
+      </PurchaseModal>
     </>
   );
 }

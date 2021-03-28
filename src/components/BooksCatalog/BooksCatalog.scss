@@ -10,3 +10,9 @@
   justify-content: space-around;
   padding: 1rem 2rem;
 }
+
+.ui.cards > .teal.card,
+.ui.teal.card,
+.ui.teal.cards > .card {
+  max-width: 16rem;
+}

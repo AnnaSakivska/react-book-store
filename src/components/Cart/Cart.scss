@@ -36,6 +36,7 @@
 }
 
 .cart-table {
+  // position: relative;
   margin-top: 6rem;
   overflow-y: auto;
   max-height: 20rem;
@@ -47,15 +48,56 @@
     width: 50%;
   }
 
-  // .total-colomn {
-  //   width: 20%;
-  // }
+  .count-input {
+    width: 4rem;
+  }
+}
 
-  // .totals-wrapper {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  // }
+.tooltip {
+  position: absolute;
+  top: 74px;
+  right: -14px;
+
+  button {
+    cursor: pointer;
+  }
+
+  .icon {
+    margin-left: 2px;
+  }
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(108, 139, 139, 0.5);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(108, 139, 139, 0.5) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 .empty-cart__wrapper {
@@ -64,4 +106,11 @@
   flex-direction: column;
   align-items: center;
   height: 50%;
+}
+
+// popup
+.puchase-total {
+  position: absolute;
+  bottom: 16px;
+  right: 32px;
 }
