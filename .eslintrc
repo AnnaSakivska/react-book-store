@@ -18,7 +18,8 @@
     "no-plusplus": "off",
     "max-len": "off",
     "object-curly-newline": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-array-index-key": "off"
     // "no-unused-expressions": "off"
   }
 }

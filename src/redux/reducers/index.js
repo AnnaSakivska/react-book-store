@@ -89,10 +89,13 @@ const cartReducer = (state = defaultCartState, action) => {
       return {
         books: [...state.books, action.payload]
       };
+    case cartType.DELETE_BOOK:
+      return {
+        ...state,
+        books: state.books.filter((item) => item.id !== action.payload)
+      };
     case cartType.ADD_AMOUNT_OF_BOOK:
-      const bookItem = [...state.books].find((item) => {
-        return item.id === action.payload.id;
-      });
+      const bookItem = [...state.books].find((item) => item.id === action.payload.id);
       return {
         books: state.books.map((item) => {
           if (item.id === bookItem.id) {

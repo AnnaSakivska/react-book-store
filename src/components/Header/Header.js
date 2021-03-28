@@ -13,6 +13,7 @@ function Header() {
     + JSON.parse(localStorage.getItem('user')).username.slice(1) : '';
   if (cartReducer.books.length) localStorage.setItem('selectedBooks', cartReducer.books.length ? JSON.stringify(cartReducer.books) : []);
   const totalItems = localStorage.getItem('selectedBooks') ? JSON.parse(localStorage.getItem('selectedBooks')) : [];
+
   return (
     <div className="ui container header-wrapper">
       <div className="header">
@@ -22,10 +23,12 @@ function Header() {
       <hr className="line-division" />
       <div className="header-cart">
         <h1>JS Band Store</h1>
-        <div className="cart-wrapper">
-          <i className="cart teal large plus icon" />
-          <span>{totalItems.length ? totalItems.map((item) => +item.orderedCount).reduce((acc, cur) => acc + cur) : 0}</span>
-        </div>
+        <Link to="/cart">
+          <div className="cart-wrapper">
+            <i className="cart teal large plus icon" />
+            <span>{totalItems.length ? totalItems.map((item) => +item.orderedCount).reduce((acc, cur) => acc + cur) : 0}</span>
+          </div>
+        </Link>
       </div>
     </div>
   );

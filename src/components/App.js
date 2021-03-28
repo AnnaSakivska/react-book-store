@@ -9,9 +9,10 @@ import LogIn from './LogIn/LogIn';
 import './App.scss';
 import Header from './Header/Header';
 import BookDetails from './BookDetails/BookDetails';
+import Cart from './Cart/Cart';
 
 const App = () => {
-  const { authorReducer, booksReducer } = useSelector((state) => state);
+  const { authorReducer } = useSelector((state) => state);
 
   return (
     <div>
@@ -27,7 +28,6 @@ const App = () => {
             exact
             render={() => (authorReducer.user.token ? <Redirect to="/bookscatalog" /> : <LogIn />)}
           />
-          {/* <Header /> */}
           <Route
             path="/bookscatalog"
             exact
@@ -37,6 +37,11 @@ const App = () => {
             path="/book-details/:id"
             exact
             render={() => (authorReducer.user.token ? <BookDetails /> : <Redirect to="/login" />)}
+          />
+          <Route
+            path="/cart"
+            exact
+            render={() => (authorReducer.user.token ? <Cart /> : <Redirect to="/login" />)}
           />
         </Switch>
       </BrowserRouter>

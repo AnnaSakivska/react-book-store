@@ -83,7 +83,8 @@ const hideLoader = () => (dispatch) => {
 // chosen books
 const cartType = {
   ADD_BOOK_TO_CART: 'ADD_BOOK_TO_CART',
-  ADD_AMOUNT_OF_BOOK: 'ADD_AMOUNT_OF_BOOK'
+  ADD_AMOUNT_OF_BOOK: 'ADD_AMOUNT_OF_BOOK',
+  DELETE_BOOK: 'DELETE_BOOK'
 };
 
 const addBookToCart = (cart) => ({
@@ -91,11 +92,16 @@ const addBookToCart = (cart) => ({
   payload: cart
 });
 
-export const addAmountOfBook = (id = null, amount) => ({
+const addAmountOfBook = (id = null, amount) => ({
   type: cartType.ADD_AMOUNT_OF_BOOK,
   payload: { id, amount }
 });
 
+const deleteBook = (id = null) => ({
+  type: cartType.DELETE_BOOK,
+  payload: id
+});
+
 export {
-  RegisterAuthAction, setUser, logOut, getBooks, addBookToCart, AuthActionType, BooksType, cartType
+  RegisterAuthAction, setUser, logOut, getBooks, addBookToCart, addAmountOfBook, deleteBook, AuthActionType, BooksType, cartType
 };
