@@ -10,6 +10,7 @@ import './App.scss';
 import Header from './Header/Header';
 import BookDetails from './BookDetails/BookDetails';
 import Cart from './Cart/Cart';
+import ScrollToTop from './ScrollToTop';
 
 const App = () => {
   const { authorReducer } = useSelector((state) => state);
@@ -17,6 +18,7 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
+        <ScrollToTop />
         <Switch>
           <Route
             path="/"
