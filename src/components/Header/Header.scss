@@ -4,6 +4,7 @@
 
 .header,
 .header-cart {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -16,6 +17,25 @@
   .cart-wrapper {
     cursor: pointer;
     margin: 0 2rem 14px 0;
+  }
+}
+
+.to-catalog-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  // height: 4rem;
+  align-items: center;
+  width: 14rem;
+
+  img {
+    width: 2.4rem;
   }
 }
 

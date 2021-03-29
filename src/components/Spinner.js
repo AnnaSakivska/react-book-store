@@ -4,6 +4,7 @@ function Spinner() {
   const style = {
     loadWrapper: {
       marginTop: '2rem',
+      marginBottom: '-6.8rem',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',

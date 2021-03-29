@@ -6,11 +6,14 @@ import Header from '../Header/Header';
 import { addBookToCart, addAmountOfBook, deleteBook, deleteAllBooks } from '../../redux/actions';
 import PurchaseModal from '../PurchaceModal/PurchaseModal';
 import './Cart.scss';
+import Spinner from '../Spinner';
+import ErrorMessage from '../ErrorMessage';
 
 function Cart() {
-  const [isLastBook, setIsLastBook] = useState(false);
   const [isPurchase, setIsPurchase] = useState(false);
   const [purchaseMsg, setPurchaseMsg] = useState('');
+  const [isPurchaseLoading, setIsPurchaseLoading] = useState(false);
+  const [purchaseError, setPurchaseError] = useState('');
   const dispatch = useDispatch();
   const reducerBooks = useSelector((state) => state.cartReducer.books);
   const localStBooks = JSON.parse(localStorage.getItem('selectedBooks'));
@@ -24,7 +27,7 @@ function Cart() {
       if (JSON.parse(localStorage.getItem('isLastBookToDelete'))) localStorage.setItem('selectedBooks', '[]');
       JSON.parse(localStorage.getItem('selectedBooks')).forEach((book) => dispatch(addBookToCart(book)));
     }
-  });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('isLastBookToDelete', 'false');
@@ -61,18 +64,21 @@ function Cart() {
     });
 
     try {
-      const res = await axios.post('https://js-band-store-api.glitch.me/purchase', { books: [idArr.join()] }, { headers });
+      setIsPurchaseLoading(true);
+      const res = await axios.post('/purchase', { books: [idArr.join()] }, { headers });
       const { data } = res;
       setPurchaseMsg(data.message);
       setIsPurchase(true);
     } catch (error) {
-      console.log(error);
+      setIsPurchaseLoading(true);
+      setPurchaseError(JSON.stringify(error.message));
     } finally {
-      // dispatch(hideLoader());
+      setIsPurchaseLoading(false);
     }
   };
 
   const cartContent = (cartBooks, handler) => {
+    if (isPurchaseLoading) return <Spinner />;
     if (!cartBooks.length) {
       return (
         <div className="empty-cart__container">
@@ -84,54 +90,57 @@ function Cart() {
       );
     }
     return (
-      <div className="cart__container">
-        <div className="cart-table">
-          <table className="ui celled table">
-            <thead>
-              <tr>
-                <th className="name-colomn">Name</th>
-                <th>Count</th>
-                <th>Price</th>
-                <th className="total-colomn">
-                  <span>Total</span>
-                  <div className="tooltip">
-                    <button type="button" onClick={onClearCart}>
-                      <i className="close inverted black icon" />
-                    </button>
-                    <span className="tooltiptext">Clear cart</span>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {books.map((book) => {
-                return (
-                  <tr className="cart-row" key={book.id}>
-                    <td data-label="name">{book.title}</td>
-                    <td data-label="count">
-                      <input
-                        className="count-input"
-                        type="number"
-                        id="tentacles"
-                        name="tentacles"
-                        min={0}
-                        max={book.availableCount}
-                        defaultValue={book.orderedCount}
-                        onChange={(ev) => handler(ev, book.id, book.orderedCount, book.availableCount)}
-                      />
-                    </td>
-                    <td data-label="price">{book.price}</td>
-                    <td data-label="total" className="totals-wrapper">
-                      {parseFloat(book.price * book.orderedCount).toFixed(2)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+      <>
+        {purchaseError ? <ErrorMessage errorMsg={purchaseError} /> : ''}
+        <div className="cart__container">
+          <div className="cart-table">
+            <table className="ui celled table">
+              <thead>
+                <tr>
+                  <th className="name-colomn">Name</th>
+                  <th>Count</th>
+                  <th>Price</th>
+                  <th className="total-colomn">
+                    <span>Total</span>
+                    <div className="tooltip">
+                      <button type="button" onClick={onClearCart}>
+                        <i className="close inverted black icon" />
+                      </button>
+                      <span className="tooltiptext">Clear cart</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {books.map((book) => {
+                  return (
+                    <tr className="cart-row" key={book.id}>
+                      <td data-label="name">{book.title}</td>
+                      <td data-label="count">
+                        <input
+                          className="count-input"
+                          type="number"
+                          id="tentacles"
+                          name="tentacles"
+                          min={0}
+                          max={book.availableCount}
+                          defaultValue={book.orderedCount}
+                          onChange={(ev) => handler(ev, book.id, book.orderedCount, book.availableCount)}
+                        />
+                      </td>
+                      <td data-label="price">{book.price}</td>
+                      <td data-label="total" className="totals-wrapper">
+                        {parseFloat(book.price * book.orderedCount).toFixed(2)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <span className="cart-total">{`Total Price -  ${totalPrice} $`}</span>
         </div>
-        <span className="cart-total">{`Total Price -  ${totalPrice} $`}</span>
-      </div>
+      </>
     );
   };
 
@@ -155,7 +164,7 @@ function Cart() {
             </tr>
           </thead>
           <tbody>
-            {[...books].map((book) => {
+            {books.map((book) => {
               return (
                 <tr className="cart-row" key={book.id}>
                   <td data-label="name">{book.title}</td>

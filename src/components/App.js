@@ -11,6 +11,7 @@ import Header from './Header/Header';
 import BookDetails from './BookDetails/BookDetails';
 import Cart from './Cart/Cart';
 import ScrollToTop from './ScrollToTop';
+import NotFound from './NotFound';
 
 const App = () => {
   const { authorReducer } = useSelector((state) => state);
@@ -45,6 +46,7 @@ const App = () => {
             exact
             render={() => (authorReducer.user.token ? <Cart /> : <Redirect to="/login" />)}
           />
+          <Route exact path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>
     </div>

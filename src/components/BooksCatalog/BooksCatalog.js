@@ -9,6 +9,7 @@ import { getBooks } from '../../redux/actions';
 import BookCard from '../BookCard/BookCard';
 import Spinner from '../Spinner';
 import FilterBooks from '../FilterBooks/FilterBooks';
+import ErrorMessage from '../ErrorMessage';
 
 function BooksCatalog() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,7 +25,8 @@ function BooksCatalog() {
     const searchValue = value.books.filter((book) => (book.price > chosenPrice.min && book.price < chosenPrice.max)
       && book.title.toLowerCase().includes(searchTerm.toLowerCase()));
     if (value.loading) return <Spinner />;
-    if (searchValue.length === 0) return <h1>No books related to this theme!</h1>;
+    if (searchValue.length === 0 && !value.error) return <h1>No books related to this theme!</h1>;
+    if (value.error) return <ErrorMessage errorMsg={value.error.message} />;
     return (
       searchValue.map(({ title, author, price, cover, id }) => {
         return (

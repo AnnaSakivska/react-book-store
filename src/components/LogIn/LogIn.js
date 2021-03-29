@@ -6,9 +6,11 @@ import validate from '../validateForm';
 import { RegisterAuthAction } from '../../redux/actions';
 import './LogIn.scss';
 import Spinner from '../Spinner';
+import ErrorMessage from '../ErrorMessage';
+import login from '../../assets/img/login.jpg';
 
 function LogIn() {
-  const imgUrl = 'https://source.unsplash.com/1600x900/?javascript?programming';
+  const imgUrl = '../../assets/img/login_img.jpg';
   const [name, setName] = useState('');
   const [errors, setErrors] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,7 +31,7 @@ function LogIn() {
     setErrors(validate(name, setIsSubmitting));
   };
 
-  if (authorReducer.loading && authorReducer.isLoggedIn) {
+  if (authorReducer.loading) {
     return (
       <div className="login__container">
         <div className="login">
@@ -40,10 +42,11 @@ function LogIn() {
   }
   return (
     <>
-      {authorReducer.error && <h1>Something went wrong!</h1>}
+      {authorReducer.error && <ErrorMessage errorMsg={authorReducer.error.message} />}
       <div className="login__container">
         <div className="login">
-          <img className="ui medium bordered image login__img" alt="log in img" src={imgUrl} />
+          <img className="ui medium rounded image login__img" alt="log in img" src={login} />
+          <h3 className="welcome-text">Welcome to JS Band Book Store!</h3>
           <form className="ui form login__form" onSubmit={handleSubmit}>
             <div className="field">
               <label htmlFor="name__login">

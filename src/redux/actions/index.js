@@ -19,7 +19,7 @@ const RegisterAuthAction = (userName) => {
       localStorage.setItem('user', JSON.stringify(res.data));
       dispatch({ type: 'REGISTER_SUCCESS', payload: data });
     } catch (error) {
-      console.log(error);
+      dispatch(showLoader());
       dispatch({ type: 'REGISTER_FAIL', payload: error });
     } finally {
       dispatch(hideLoader());
@@ -62,7 +62,33 @@ const getBooks = (token = initialUserToken || '') => {
       const { data } = res;
       dispatch({ type: 'GET_BOOKS_SUCC', payload: data });
     } catch (error) {
-      dispatch({ type: 'GET_BOOKS_FAIL', payload: {} });
+      dispatch(showLoader());
+      dispatch({ type: 'GET_BOOKS_FAIL', payload: error });
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+};
+
+const specificBookType = {
+  GET_BOOK_SUCC: 'GET_BOOK_SUCC',
+  GET_BOOK_FAIL: 'GET_BOOK_FAIL'
+};
+
+const getSpecificBook = (token = initialUserToken || '', id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader());
+      const res = await axios.get(`https://js-band-store-api.glitch.me/books/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const { data } = res;
+      dispatch({ type: 'GET_BOOK_SUCC', payload: data });
+    } catch (error) {
+      dispatch(showLoader());
+      dispatch({ type: 'GET_BOOK_FAIL', payload: error });
     } finally {
       dispatch(hideLoader());
     }
@@ -119,7 +145,9 @@ export {
   addAmountOfBook,
   deleteBook,
   deleteAllBooks,
+  getSpecificBook,
   AuthActionType,
   BooksType,
+  specificBookType,
   cartType
 };
