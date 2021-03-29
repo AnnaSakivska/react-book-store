@@ -10,7 +10,7 @@ function AmountPriceCard({ id, title, availableCount, price }) {
   const [disabledBtn, setDisabledBtn] = useState(true);
   const [warningMsg, setWarningMsg] = useState('');
   const dispatch = useDispatch();
-  const cart = { id, title, orderedCount: bookCount, price };
+  const cart = { id, title, orderedCount: bookCount, price, availableCount };
   const { cartReducer } = useSelector((state) => state);
   const chosenBookInArray = cartReducer.books.filter((item) => item.id === id).length;
 

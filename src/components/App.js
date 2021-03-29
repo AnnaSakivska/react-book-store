@@ -9,13 +9,17 @@ import LogIn from './LogIn/LogIn';
 import './App.scss';
 import Header from './Header/Header';
 import BookDetails from './BookDetails/BookDetails';
+import Cart from './Cart/Cart';
+import ScrollToTop from './ScrollToTop';
+import NotFound from './NotFound';
 
 const App = () => {
-  const { authorReducer, booksReducer } = useSelector((state) => state);
+  const { authorReducer } = useSelector((state) => state);
 
   return (
     <div>
       <BrowserRouter>
+        <ScrollToTop />
         <Switch>
           <Route
             path="/"
@@ -27,7 +31,6 @@ const App = () => {
             exact
             render={() => (authorReducer.user.token ? <Redirect to="/bookscatalog" /> : <LogIn />)}
           />
-          {/* <Header /> */}
           <Route
             path="/bookscatalog"
             exact
@@ -38,6 +41,12 @@ const App = () => {
             exact
             render={() => (authorReducer.user.token ? <BookDetails /> : <Redirect to="/login" />)}
           />
+          <Route
+            path="/cart"
+            exact
+            render={() => (authorReducer.user.token ? <Cart /> : <Redirect to="/login" />)}
+          />
+          <Route exact path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>
     </div>

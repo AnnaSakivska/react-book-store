@@ -5,46 +5,45 @@ import { useParams } from 'react-router-dom';
 import './BookDetails.scss';
 import Header from '../Header/Header';
 import AmountPriceCard from '../AmoutPriceCard/AmountPriceCard';
-import { getBooks } from '../../redux/actions';
+import { getBooks, getSpecificBook } from '../../redux/actions';
 import Spinner from '../Spinner';
+import ErrorMessage from '../ErrorMessage';
 
 function BookDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const userToken = JSON.parse(localStorage.getItem('user')).token;
-  const { booksReducer } = useSelector((state) => state);
+  const { booksReducer, specificBookReducer } = useSelector((state) => state);
 
   useEffect(() => {
-    if (!booksReducer.books.length) {
-      dispatch(getBooks(userToken));
-    }
+    dispatch(getSpecificBook(userToken, id));
   }, []);
 
   const searchBook = (reducer, token) => {
-    if (reducer.books.length === 0 || reducer.loading) return <Spinner />;
-    if (reducer.books.length) {
-      const { author, count, cover, description, level, price, tags, title } = reducer.books.find((book) => book.id === id);
-      return (
-        <>
-          <div className="book-details">
-            <div className="book-img__wrapper">
-              <img className="ui medium rounded image" src={cover} alt="book cover" />
-              <p className="book-description">{description}</p>
-            </div>
-            <div>
-              <h3 className="book-title">{title}</h3>
-              <span className="book-author">{author}</span>
-              <div className="book-tag">
-                <i className="tags icon" />
-                {tags.map((tag) => <span key={Math.random(10)}>{`${tag.slice(0, 1).toUpperCase() + tag.slice(1)}, `}</span>)}
-                <span>{level}</span>
-              </div>
+    const { author, count, cover, description, level, price, tags, title } = specificBookReducer.book;
+    if (reducer.loading) return <Spinner />;
+    if (reducer.error) return <ErrorMessage errorMsg={reducer.error.message} />;
+    return (
+      <>
+        <div className="book-details">
+          <div className="book-img__wrapper">
+            <img className="ui medium rounded image" src={cover} alt="book cover" />
+            <p className="book-description">{description}</p>
+          </div>
+          <div>
+            <h3 className="book-title">{title}</h3>
+            <span className="book-author">{author}</span>
+            <div className="book-tag">
+              <i className="tags icon" />
+              {tags ? tags.map((tag) => <span key={Math.random(10)}>{`${tag.slice(0, 1).toUpperCase() + tag.slice(1)}, `}</span>) : ''}
+              <span>{level}</span>
             </div>
           </div>
-          <AmountPriceCard id={id} title={title} availableCount={count} price={price} />
-        </>
-      );
-    }
+        </div>
+        <AmountPriceCard id={id || ''} title={title || ''} availableCount={count || null} price={price || null} />
+      </>
+    );
+    // };
   };
 
   return (
@@ -52,7 +51,7 @@ function BookDetails() {
       <div className="ui container">
         <Header />
         <div className="details-wrapper">
-          {searchBook(booksReducer, userToken)}
+          {searchBook(specificBookReducer, userToken)}
         </div>
       </div>
     </>
