@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  BrowserRouter, Route, Switch, Redirect
+  HashRouter as Rounter, Route, Switch, Redirect
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import BooksCatalog from './BooksCatalog/BooksCatalog';
@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <div>
-      <BrowserRouter>
+      <Rounter>
         <ScrollToTop />
         <Switch>
           <Route
@@ -48,7 +48,7 @@ const App = () => {
           />
           <Route exact path="*" component={NotFound} />
         </Switch>
-      </BrowserRouter>
+      </Rounter>
     </div>
   );
 };
