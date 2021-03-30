@@ -60,7 +60,16 @@ function AmountPriceCard({ id, title, availableCount, price }) {
             </div>
             <div className="price-row">
               <span>Cart</span>
-              <input type="number" id="tentacles" name="tentacles" min="0" max={countAvailAmountOfBook(availableCount)} defaultValue="0" onChange={(ev) => onAmountOfBookChange(ev)} />
+              <input
+                type="number"
+                id="tentacles"
+                name="tentacles"
+                min="0"
+                max={countAvailAmountOfBook(availableCount)}
+                defaultValue="0"
+                onChange={(ev) => onAmountOfBookChange(ev)}
+                onKeyDown={(ev) => ev.preventDefault()}
+              />
             </div>
             <div className="price-row">
               <span>Total Price, $</span>

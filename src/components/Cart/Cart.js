@@ -126,6 +126,7 @@ function Cart() {
                           max={book.availableCount}
                           defaultValue={book.orderedCount}
                           onChange={(ev) => handler(ev, book.id, book.orderedCount, book.availableCount)}
+                          onKeyDown={(ev) => ev.preventDefault()}
                         />
                       </td>
                       <td data-label="price">{book.price}</td>
