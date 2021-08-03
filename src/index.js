@@ -1,19 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { Provider } from 'mobx-react';
 import axios from 'axios';
-import store from './redux/store';
-
+import stores from './stores';
 import App from './components/App';
 
 axios.defaults.baseURL = 'https://js-band-store-api.glitch.me';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+  <Provider stores={stores}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
 

@@ -1,27 +1,27 @@
-{
-  "extends": "airbnb",
-  "globals": {
-    "SwaggerEditor": false
-  },
-  "env": {
-    "browser": true
-  },
-  "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "arrow-body-style": 0,
-    "quotes": [2, "single"],
-    "linebreak-style": 0,
-    "comma-dangle": ["error", "never"],
-    "no-unused-vars": "off",
-    "no-underscore-dangle": "off",
-    "no-use-before-define": "off",
-    "no-plusplus": "off",
-    "max-len": "off",
-    "object-curly-newline": "off",
-    "consistent-return": "off",
-    "no-array-index-key": "off",
-    "click-events-have-key-events": "off",
-    "react/prop-types" : "off"
-    // "no-unused-expressions": "off"
-  }
-}
+////{
+//  "extends": "airbnb",
+//  "globals": {
+//    "SwaggerEditor": false
+//  },
+//  "env": {
+//    "browser": true
+//  },
+//  "rules": {
+//    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+//    "arrow-body-style": 0,
+//    "quotes": [2, "single"],
+//    "linebreak-style": 0,
+//    "comma-dangle": ["error", "never"],
+//    "no-unused-vars": "off",
+//    "no-underscore-dangle": "off",
+//    "no-use-before-define": "off",
+//    "no-plusplus": "off",
+//    "max-len": "off",
+//    "object-curly-newline": "off",
+//    "consistent-return": "off",
+//    "no-array-index-key": "off",
+//    "click-events-have-key-events": "off",
+//    "react/prop-types" : "off"
+//    // "no-unused-expressions": "off"
+//  }
+//}

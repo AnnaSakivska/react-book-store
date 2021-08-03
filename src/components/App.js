@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
 import {
   HashRouter as Rounter, Route, Switch, Redirect
 } from 'react-router-dom';
@@ -13,9 +14,7 @@ import Cart from './Cart/Cart';
 import ScrollToTop from './ScrollToTop';
 import NotFound from './NotFound';
 
-const App = () => {
-  const { authorReducer } = useSelector((state) => state);
-
+const App = observer((stores) => {
   return (
     <div>
       <Rounter>
@@ -24,33 +23,34 @@ const App = () => {
           <Route
             path="/"
             exact
-            render={() => (authorReducer.user.token ? <Redirect to="/bookscatalog" /> : <Redirect to="/login" />)}
+            render={() => (stores.authStore?.getUser.token ? <Redirect to="/bookscatalog" /> : <Redirect to="/login" />)}
           />
           <Route
             path="/login"
             exact
-            render={() => (authorReducer.user.token ? <Redirect to="/bookscatalog" /> : <LogIn />)}
+            render={() => (stores.authStore?.getUser.token ? <Redirect to="/bookscatalog" /> : <LogIn />)}
           />
-          <Route
-            path="/bookscatalog"
-            exact
-            render={() => (authorReducer.user.token ? <BooksCatalog /> : <Redirect to="/login" />)}
-          />
-          <Route
-            path="/book-details/:id"
-            exact
-            render={() => (authorReducer.user.token ? <BookDetails /> : <Redirect to="/login" />)}
-          />
-          <Route
-            path="/cart"
-            exact
-            render={() => (authorReducer.user.token ? <Cart /> : <Redirect to="/login" />)}
-          />
-          <Route exact path="*" component={NotFound} />
         </Switch>
       </Rounter>
     </div>
   );
-};
+});
 
-export default App;
+export default inject('stores')(App);
+
+// {/*<Route*/}
+// {/*  path='/bookscatalog'*/}
+// {/*  exact*/}
+// {/*  render={() => (authorReducer.user.token ? <BooksCatalog /> : <Redirect to='/login' />)}*/}
+// {/*/>*/}
+// {/*<Route*/}
+// {/*  path='/book-details/:id'*/}
+// {/*  exact*/}
+// {/*  render={() => (authorReducer.user.token ? <BookDetails /> : <Redirect to='/login' />)}*/}
+// {/*/>*/}
+// {/*<Route*/}
+// {/*  path='/cart'*/}
+// {/*  exact*/}
+// {/*  render={() => (authorReducer.user.token ? <Cart /> : <Redirect to='/login' />)}*/}
+// {/*/>*/}
+// {/*<Route exact path='*' component={NotFound} />*/}
