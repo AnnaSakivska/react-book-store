@@ -3,18 +3,20 @@ import { inject, observer } from 'mobx-react';
 import {
   HashRouter as Rounter, Route, Switch, Redirect
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import BooksCatalog from './BooksCatalog/BooksCatalog';
 
 import LogIn from './LogIn/LogIn';
 import './App.scss';
-import Header from './Header/Header';
-import BookDetails from './BookDetails/BookDetails';
-import Cart from './Cart/Cart';
+// import Header from './Header/Header';
+// import BookDetails from './BookDetails/BookDetails';
+// import Cart from './Cart/Cart';
 import ScrollToTop from './ScrollToTop';
-import NotFound from './NotFound';
+// import NotFound from './NotFound';
 
-const App = observer((stores) => {
+const App = observer(({ stores }) => {
+  const isUserAlreadyLoggedIn = !!JSON.parse(localStorage.getItem('user'))?.token || stores.authStore.isLoggedIn;
+
   return (
     <div>
       <Rounter>
@@ -23,13 +25,19 @@ const App = observer((stores) => {
           <Route
             path="/"
             exact
-            render={() => (stores.authStore?.getUser.token ? <Redirect to="/bookscatalog" /> : <Redirect to="/login" />)}
+            render={() => (isUserAlreadyLoggedIn ? <Redirect to="/bookscatalog" /> : <Redirect to="/login" />)}
           />
           <Route
             path="/login"
             exact
-            render={() => (stores.authStore?.getUser.token ? <Redirect to="/bookscatalog" /> : <LogIn />)}
+            render={() => (isUserAlreadyLoggedIn ? <Redirect to="/bookscatalog" /> : <LogIn />)}
           />
+          <Route
+            path='/bookscatalog'
+            exact
+            render={() => (isUserAlreadyLoggedIn ? <BooksCatalog /> : <Redirect to='/login' />)}
+          />
+          <Route />
         </Switch>
       </Rounter>
     </div>

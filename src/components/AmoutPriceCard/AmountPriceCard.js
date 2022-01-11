@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import './AmountPriceCard.scss';
 import { addBookToCart, addAmountOfBook } from '../../redux/actions';
 
-// eslint-disable-next-line react/prop-types
 function AmountPriceCard({ id, title, availableCount, price }) {
   const [bookCount, setbookCount] = useState(0);
   const [AddToCart, setAddToCart] = useState(false);
@@ -36,7 +35,6 @@ function AmountPriceCard({ id, title, availableCount, price }) {
     document.getElementById('total-price').innerText = 0;
 
     if (+countAvailAmountOfBook(availableCount) === 0) setWarningMsg('No available copies!');
-    // in case page was reloaded
     if (localStorage.getItem('selectedBooks') && !cartReducer.books.length) {
       JSON.parse(localStorage.getItem('selectedBooks')).forEach((book) => {
         dispatch(addBookToCart(book));

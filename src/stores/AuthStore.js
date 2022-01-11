@@ -8,6 +8,8 @@ export default class AuthStore {
 
   loading = false;
 
+  token = 0;
+
   user = {
     username: '',
     avatar: '',
@@ -19,6 +21,7 @@ export default class AuthStore {
     makeObservable(this, {
       error: observable,
       user: observable,
+      token: observable,
       loading: observable,
       setError: action,
       setUserData: action,
@@ -34,6 +37,10 @@ export default class AuthStore {
 
   get getUser() {
     return toJS(this.user);
+  }
+
+  get authStatus() {
+    return this.isLoggedIn;
   }
 
   get getErrors() {
@@ -56,9 +63,12 @@ export default class AuthStore {
       this.setUserData(data);
       console.log(JSON.stringify(res.data));
       localStorage.setItem('user', JSON.stringify(res.data));
+      // this.token = JSON.stringify(res.data).token;
+      this.isLoggedIn = 'true';
     } catch (error) {
       this.setError(error)
       console.log(error);
+      this.isLoggedIn = 'false';
     } finally {
       this.toggleLoader();
     }

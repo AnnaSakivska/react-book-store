@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { inject, observer } from 'mobx-react';
+// import { useDispatch, useSelector } from 'react-redux';
 
 import './BooksCatalog.scss';
-// import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from 'react-infinite-scroller';
 import Header from '../Header/Header';
 import SearchBar from '../SearchBar';
-import { getBooks } from '../../redux/actions';
+// import { getBooks } from '../../redux/actions';
 import BookCard from '../BookCard/BookCard';
 import Spinner from '../Spinner';
 import FilterBooks from '../FilterBooks/FilterBooks';
 import ErrorMessage from '../ErrorMessage';
 
-function BooksCatalog() {
+const BooksCatalog = observer(({ stores }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPrice, setFilterPrice] = useState({ min: 0, max: Infinity });
   const [noBooks, setNoBooks] = useState('');
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const userToken = JSON.parse(localStorage.getItem('user')).token;
-  const { booksReducer } = useSelector((state) => state);
+  // const { books, setBooks } = useState({});
 
-  useEffect(() => { dispatch(getBooks(userToken)); }, []);
+  useEffect(async () => {
+    await stores.booksStore.getBooks(userToken);
+
+    console.log(stores.booksStore.books);
+
+  }, []);
 
   const searchBooks = (value, chosenPrice) => {
+    console.log(value)
     const searchValue = value.books.filter((book) => (book.price > chosenPrice.min && book.price < chosenPrice.max)
       && book.title.toLowerCase().includes(searchTerm.toLowerCase()));
     if (value.loading) return <Spinner />;
@@ -52,11 +59,12 @@ function BooksCatalog() {
           <FilterBooks filterPrice={filterPrice} setFilterPrice={setFilterPrice} />
         </div>
         <div className="ui link cards cards__container">
-          {searchBooks(booksReducer, filterPrice)}
+          {searchBooks(stores.booksStore, filterPrice)}
         </div>
       </div>
     </>
   );
-}
+});
 
-export default BooksCatalog;
+export default inject('stores')(BooksCatalog);
+

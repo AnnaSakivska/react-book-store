@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
 import { inject, observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 
 import validate from '../validateForm';
 // import { RegisterAuthAction } from '../../redux/actions';
@@ -10,39 +9,59 @@ import Spinner from '../Spinner';
 import ErrorMessage from '../ErrorMessage';
 import login from '../../assets/img/login.jpg';
 
-const LogIn = observer((stores) => {
+const LogIn = observer(({ stores }) => {
   const imgUrl = '../../assets/img/login_img.jpg';
   const [name, setName] = useState('');
   const [errors, setErrors] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(!!JSON.parse(localStorage.getItem('user'))?.token);
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const dispatch = useDispatch();
   const history = useHistory();
+  // const isSavedToken = !!JSON.parse(localStorage.getItem('user'))?.token;
+
   // const { authorReducer } = useSelector((state) => state);
 
   // useEffect(() => {
-  //   if (isSubmitting) {
+  //   if (isLoggedIn) {
   //     // dispatch(RegisterAuthAction(name));
-  //     // history.push('/bookscatalog');
+  //     history.push('/bookscatalog');
+  //     // console.log(isSubmitting);
+  //     // console.log('there is a tocken');
   //   }
-  //   setIsSubmitting(false);
-  // }, [isSubmitting]);
+  //   // setIsSubmitting(false);
+  // }, []);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
     setErrors(validate(name, setIsSubmitting));
-    console.log(stores.authStore?.getUser);
-    stores.authStore?.login(name);
+
+    if(!JSON.parse(localStorage.getItem('user')) && !errors) {
+      await stores.authStore.login(name);
+      setIsLoggedIn(stores.authStore.isLoggedIn);
+      history.push('/bookscatalog');
+      // setIsSubmitting(true);
+
+    }
+    // if(localStorage.getItem('user')) {
+    //   // console.log('submitted')
+    // } else {
+    //   setIsSubmitting(false);
+    // }
   };
 
-  // {/*if (authorReducer.loading) {*/}
-  //   return (
-  //     <div className="login__container">
-  //       <div className="login">
-  //         <Spinner />
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (stores.authStore.loading) {
+    return (
+      <div className="login__container">
+        <div className="login">
+          <Spinner />
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoggedIn) {
+    return <Redirect to="/bookscatalog" />;
+  }
   return (
     <>
       {stores.authStore?.getErrors && <ErrorMessage errorMsg={stores.authStore?.getErrors} />}
@@ -61,7 +80,6 @@ const LogIn = observer((stores) => {
                   name="first-name"
                   placeholder="Log-in Name"
                   value={name}
-                  // eslint-disable-next-line no-unused-expressions
                   onKeyPress={(ev) => { ev.key === 'Enter' && ev.preventDefault(); }}
                   onClick={(ev) => setErrors('')}
                   onChange={(ev) => setName(ev.target.value)}
