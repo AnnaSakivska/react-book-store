@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 import { inject, observer } from 'mobx-react';
 
@@ -15,8 +15,8 @@ const Header = observer(({ stores }) => {
   const userInfo = JSON.parse(localStorage.getItem('user'));
   const userName = localStorage.getItem('user') ? userInfo.username.charAt(0).toUpperCase()
     + userInfo.username.slice(1) : '';
-  if (stores.booksStore.books.length) localStorage.setItem('selectedBooks', stores.booksStore.books.length ? JSON.stringify(stores.booksStore.books) : []);
-  const totalItems = localStorage.getItem('selectedBooks') ? JSON.parse(localStorage.getItem('selectedBooks')) : [];
+  // if (stores.booksStore.books.length) localStorage.setItem('selectedBooks', stores.booksStore.books.length ? JSON.stringify(stores.booksStore.books) : []);
+  // const totalItems = localStorage.getItem('selectedBooks') ? JSON.parse(localStorage.getItem('selectedBooks')) : [];
 
   return (
     <div className="ui container header-wrapper">
@@ -38,7 +38,7 @@ const Header = observer(({ stores }) => {
         <Link to="/cart">
           <div className="cart-wrapper">
             <i className="cart teal large plus icon" />
-            <span>{totalItems.length ? totalItems.map((item) => +item.orderedCount).reduce((acc, cur) => acc + cur) : 0}</span>
+            {/*<span>{totalItems.length ? totalItems.map((item) => +item.orderedCount).reduce((acc, cur) => acc + cur) : 0}</span>*/}
           </div>
         </Link>
       </div>

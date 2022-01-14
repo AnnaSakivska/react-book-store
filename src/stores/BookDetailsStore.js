@@ -1,17 +1,17 @@
 import { action, makeObservable, observable, toJS } from 'mobx';
 import axios from 'axios';
 
-export default class BooksStore {
+export default class BookDetailsStore {
   error = '';
 
   loading = false;
 
-  books = [];
+  bookDetailData = {};
 
   constructor() {
     makeObservable(this, {
       error: observable,
-      books: observable,
+      bookDetailData: observable,
       loading: observable,
       setError: action,
     })
@@ -25,17 +25,6 @@ export default class BooksStore {
     this.error = e;
   }
 
-  setBooksData(books) {
-    this.books = [
-      ...this.books,
-      ...books
-    ];
-  }
-
-  getBooks() {
-    return toJS(this.books);
-  }
-
   getLoading() {
     return toJS(this.loading);
   }
@@ -44,22 +33,32 @@ export default class BooksStore {
     return toJS(this.error);
   }
 
-  fetchBooks = async (token) => {
+  getBookDetails() {
+    return toJS(this.bookDetailData);
+  }
+
+  setBookDetails(details) {
+    this.bookDetailData = [
+      ...this.bookDetailData,
+      ...details
+    ];
+  }
+
+  fetchBookDetails = async (token = '', id) => {
     try {
-      this.toggleLoader();
-      const res = await axios.get('/books', {
+      const res = await axios.get(`https://js-band-store-api.glitch.me/books/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       const { data } = res;
 
-      this.setBooksData(data);
+      this.setBookDetails(data);
     } catch (error) {
       this.setError(error);
       this.toggleLoader();
     } finally {
       this.toggleLoader();
     }
-  };
+  }
 }

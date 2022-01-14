@@ -9,7 +9,7 @@ import BooksCatalog from './BooksCatalog/BooksCatalog';
 import LogIn from './LogIn/LogIn';
 import './App.scss';
 // import Header from './Header/Header';
-// import BookDetails from './BookDetails/BookDetails';
+import BookDetails from './BookDetails/BookDetails';
 // import Cart from './Cart/Cart';
 import ScrollToTop from './ScrollToTop';
 // import NotFound from './NotFound';
@@ -38,6 +38,11 @@ const App = observer(({ stores }) => {
             render={() => (isUserAlreadyLoggedIn ? <BooksCatalog /> : <Redirect to='/login' />)}
           />
           <Route />
+          <Route
+            path='/book-details/:id'
+            exact
+            render={() => (isUserAlreadyLoggedIn ? <BookDetails /> : <Redirect to='/login' />)}
+          />
         </Switch>
       </Rounter>
     </div>
